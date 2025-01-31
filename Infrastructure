@@ -190,7 +190,7 @@ Resources:
      Tags:
        - Key: Name
          Value: ecomm-app-nacl
-         
+
 
  # App NACL Rules
  ecommappnaclInboundRule:
@@ -206,7 +206,7 @@ Resources:
        From: 0
        To: 65535
 
-
+      
  ecommappnaclOutboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
