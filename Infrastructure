@@ -133,7 +133,7 @@ Resources:
        Ref: ecommdbSubnet
      RouteTableId:
        Ref: ecommpvtRouteTable
-       
+
 
  # RT - Subnet Association
  ecommwebNetworkAcl:
@@ -144,6 +144,8 @@ Resources:
      Tags:
        - Key: Name
          Value: ecomm-web-nacl
+
+         
  # Web NACL Rules
  ecommwebnaclInboundRule:
    Type: AWS::EC2::NetworkAclEntry
