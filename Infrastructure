@@ -103,7 +103,7 @@ Resources:
      RouteTableId:
        Ref: ecommpubRouteTable
 
-       
+
 # RT - Subnet Association
  ecommappSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
@@ -112,6 +112,8 @@ Resources:
        Ref: ecommappSubnet
      RouteTableId:
        Ref: ecommpubRouteTable
+
+       
 # Private Route Table
  ecommpvtRouteTable:
    Type: AWS::EC2::RouteTable
