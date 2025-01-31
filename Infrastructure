@@ -11,3 +11,14 @@ Resources:
      Tags:
        - Key: Name
          Value: ecomm-vpc
+# Web Subnet         
+ ecommwebSubnet:
+   Type: AWS::EC2::Subnet
+   Properties:
+     VpcId: !Ref ecommVPC
+     CidrBlock: 10.0.0.0/24
+     AvailabilityZone: "ca-central-1a"
+     MapPublicIpOnLaunch: "true"
+     Tags:
+     - Key: Name
+       Value: ecomm-web-subnet
