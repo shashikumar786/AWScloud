@@ -123,7 +123,7 @@ Resources:
      Tags:
      - Key: Name
        Value: ecomm-pvt-rt
-
+       
 
  # RT - Subnet Association
  ecommdbSubnetRouteTableAssociation:
@@ -134,7 +134,7 @@ Resources:
      RouteTableId:
        Ref: ecommpvtRouteTable
 
-       
+
  # RT - Subnet Association
  ecommwebNetworkAcl:
    Type: AWS::EC2::NetworkAcl
