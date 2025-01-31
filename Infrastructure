@@ -39,7 +39,7 @@ Resources:
    Properties:
      VpcId: !Ref ecommVPC
      CidrBlock: 10.0.2.0/24
-     AvailabilityZone: "eu-west-2a"
+     AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "false"
      Tags:
      - Key: Name
