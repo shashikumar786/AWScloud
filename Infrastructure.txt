@@ -260,7 +260,7 @@ Resources:
      Egress: true
      RuleAction: allow
      CidrBlock: 0.0.0.0/0
-     
+
  # DB NACL Association      
  ecommdbSubnetNetworkAclAssociation:
    Type: AWS::EC2::SubnetNetworkAclAssociation
@@ -269,6 +269,7 @@ Resources:
        Ref: ecommdbSubnet
      NetworkAclId:
        Ref: ecommdbNetworkAcl
+       
 
  # Web Secuirty Group
  ecommwebInstanceSecurityGroup:
