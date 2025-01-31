@@ -81,7 +81,7 @@ Resources:
      - Key: Name
        Value: ecomm-pub-rt
 
-       
+
 # Internet Route
  myRoute:
    Type: AWS::EC2::Route
@@ -92,6 +92,8 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId:
         Ref: ecommInternetGateway
+
+        
  # RT - Subnet Association
  ecommwebSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
