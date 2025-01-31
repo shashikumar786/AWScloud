@@ -269,7 +269,7 @@ Resources:
        Ref: ecommdbSubnet
      NetworkAclId:
        Ref: ecommdbNetworkAcl
-       
+
 
  # Web Secuirty Group
  ecommwebInstanceSecurityGroup:
@@ -294,6 +294,7 @@ Resources:
      Tags:
        - Key: Name
          Value: ecomm-web-sg
+         
 
  # App Secuirty Group
  ecommappInstanceSecurityGroup:
