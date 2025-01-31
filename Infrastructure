@@ -11,6 +11,8 @@ Resources:
      Tags:
        - Key: Name
          Value: ecomm-vpc
+
+
 # Web Subnet         
  ecommwebSubnet:
    Type: AWS::EC2::Subnet
@@ -22,6 +24,8 @@ Resources:
      Tags:
      - Key: Name
        Value: ecomm-web-subnet
+
+
 # App Subnet         
  ecommappSubnet:
    Type: AWS::EC2::Subnet
@@ -33,6 +37,8 @@ Resources:
      Tags:
      - Key: Name
        Value: ecomm-app-subnet
+
+
   # DB Subnet         
  ecommdbSubnet:
    Type: AWS::EC2::Subnet
@@ -44,6 +50,8 @@ Resources:
      Tags:
      - Key: Name
        Value: ecomm-db-subnet
+
+
  # Internet Gateway
  ecommInternetGateway:
    Type: AWS::EC2::InternetGateway
@@ -51,6 +59,8 @@ Resources:
      Tags:
      - Key: Name
        Value: ecomm-igw
+
+
  # Attach Internet Gateway     
  ecommAttachGateway:
    Type: AWS::EC2::VPCGatewayAttachment
@@ -59,6 +69,8 @@ Resources:
        Ref: ecommVPC
      InternetGatewayId:
        Ref: ecommInternetGateway
+
+
  # Public Route Table
  ecommpubRouteTable:
    Type: AWS::EC2::RouteTable
@@ -68,6 +80,8 @@ Resources:
      Tags:
      - Key: Name
        Value: ecomm-pub-rt
+
+       
 # Internet Route
  myRoute:
    Type: AWS::EC2::Route
@@ -136,7 +150,7 @@ Resources:
         From: 0
         To: 65535
 
-        
+
  ecommwebnaclOutboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
