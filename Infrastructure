@@ -93,7 +93,7 @@ Resources:
       GatewayId:
         Ref: ecommInternetGateway
 
-        
+
  # RT - Subnet Association
  ecommwebSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
@@ -102,6 +102,8 @@ Resources:
        Ref: ecommwebSubnet
      RouteTableId:
        Ref: ecommpubRouteTable
+
+       
 # RT - Subnet Association
  ecommappSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
