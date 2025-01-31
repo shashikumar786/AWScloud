@@ -260,6 +260,50 @@ Resources:
      Egress: true
      RuleAction: allow
      CidrBlock: 0.0.0.0/0
+     
+ # DB NACL Association      
+ ecommdbSubnetNetworkAclAssociation:
+   Type: AWS::EC2::SubnetNetworkAclAssociation
+   Properties:
+     SubnetId:
+       Ref: ecommdbSubnet
+     NetworkAclId:
+       Ref: ecommdbNetworkAcl
+
+ # Web Secuirty Group
+ ecommwebInstanceSecurityGroup:
+   Type: AWS::EC2::SecurityGroup
+   Properties:
+     GroupDescription: Allow ssh & http to client host
+     VpcId: !Ref ecommVPC
+     SecurityGroupIngress:
+       - IpProtocol: tcp
+         FromPort: 22
+         ToPort: 22
+         CidrIp: 0.0.0.0/0
+       - IpProtocol: tcp
+         FromPort: 80
+         ToPort: 80
+         CidrIp: 0.0.0.0/0 
+     SecurityGroupEgress:
+       - IpProtocol: tcp
+         FromPort: 0
+         ToPort: 65535
+         CidrIp: 0.0.0.0/0
+     Tags:
+       - Key: Name
+         Value: ecomm-web-sg
+
+ # App Secuirty Group
+ ecommappInstanceSecurityGroup:
+   Type: AWS::EC2::SecurityGroup
+   Properties:
+     GroupDescription: Allow ssh & http to client host
+     VpcId: !Ref ecommVPC
+     SecurityGroupIngress:
+       - IpProtocol: tcp
+       
+
 
 
 
