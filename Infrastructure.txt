@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: BTS Infrastructure
+Description: NEXA Infrastructure
 Resources:
  # VPC
- BTSVPC:
+ NEXAVPC:
    Type: AWS::EC2::VPC
    Properties:
      CidrBlock: 10.0.0.0/16
@@ -10,148 +10,148 @@ Resources:
      EnableDnsHostnames: 'true'
      Tags:
        - Key: Name
-         Value: BTS-vpc
+         Value: NEXA-vpc
 
 
 # Web Subnet         
- BTSwebSubnet:
+ NEXAwebSubnet:
    Type: AWS::EC2::Subnet
    Properties:
-     VpcId: !Ref BTSVPC
+     VpcId: !Ref NEXAVPC
      CidrBlock: 10.0.0.0/24
      AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "true"
      Tags:
      - Key: Name
-       Value: BTS-web-subnet
+       Value: NEXA-web-subnet
 
 
 # App Subnet         
- BTSappSubnet:
+ NEXAappSubnet:
    Type: AWS::EC2::Subnet
    Properties:
-     VpcId: !Ref BTSVPC
+     VpcId: !Ref NEXAVPC
      CidrBlock: 10.0.1.0/24
      AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "true"
      Tags:
      - Key: Name
-       Value: BTS-app-subnet
+       Value: NEXA-app-subnet
 
 
   # DB Subnet         
- BTSdbSubnet:
+ NEXAdbSubnet:
    Type: AWS::EC2::Subnet
    Properties:
-     VpcId: !Ref BTSVPC
+     VpcId: !Ref NEXAVPC
      CidrBlock: 10.0.2.0/24
      AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "false"
      Tags:
      - Key: Name
-       Value: BTS-db-subnet
+       Value: NEXA-db-subnet
 
 
  # Internet Gateway
- BTSInternetGateway:
+ NEXAInternetGateway:
    Type: AWS::EC2::InternetGateway
    Properties:
      Tags:
      - Key: Name
-       Value: BTS-igw
+       Value: NEXA-igw
 
 
  # Attach Internet Gateway     
- BTSAttachGateway:
+ NEXAAttachGateway:
    Type: AWS::EC2::VPCGatewayAttachment
    Properties:
      VpcId:
-       Ref: BTSVPC
+       Ref: NEXAVPC
      InternetGatewayId:
-       Ref: BTSInternetGateway
+       Ref: NEXAInternetGateway
 
 
  # Public Route Table
- BTSpubRouteTable:
+ NEXApubRouteTable:
    Type: AWS::EC2::RouteTable
    Properties:
      VpcId: 
-       Ref: BTSVPC
+       Ref: NEXAVPC
      Tags:
      - Key: Name
-       Value: BTS-pub-rt
+       Value: NEXA-pub-rt
 
 
 # Internet Route
  myRoute:
    Type: AWS::EC2::Route
-   DependsOn: BTSAttachGateway
+   DependsOn: NEXAAttachGateway
    Properties:
       RouteTableId:
-        Ref: BTSpubRouteTable
+        Ref: NEXApubRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId:
-        Ref: BTSInternetGateway
+        Ref: NEXAInternetGateway
 
 
  # RT - Subnet Association
- BTSwebSubnetRouteTableAssociation:
+ NEXAwebSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
      SubnetId:
-       Ref: BTSwebSubnet
+       Ref: NEXAwebSubnet
      RouteTableId:
-       Ref: BTSpubRouteTable
+       Ref: NEXApubRouteTable
 
 
 # RT - Subnet Association
- BTSappSubnetRouteTableAssociation:
+ NEXAappSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
      SubnetId:
-       Ref: BTSappSubnet
+       Ref: NEXAappSubnet
      RouteTableId:
-       Ref: BTSpubRouteTable
+       Ref: NEXApubRouteTable
 
 
 # Private Route Table
- BTSpvtRouteTable:
+ NEXApvtRouteTable:
    Type: AWS::EC2::RouteTable
    Properties:
      VpcId: 
-       Ref: BTSVPC
+       Ref: NEXAVPC
      Tags:
      - Key: Name
-       Value: BTS-pvt-rt
+       Value: NEXA-pvt-rt
 
 
  # RT - Subnet Association
- BTSdbSubnetRouteTableAssociation:
+ NEXAdbSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
      SubnetId:
-       Ref: BTSdbSubnet
+       Ref: NEXAdbSubnet
      RouteTableId:
-       Ref: BTSpvtRouteTable
+       Ref: NEXApvtRouteTable
 
 
  # RT - Subnet Association
- BTSwebNetworkAcl:
+ NEXAwebNetworkAcl:
    Type: AWS::EC2::NetworkAcl
    Properties:
      VpcId:
-       Ref: BTSVPC
+       Ref: NEXAVPC
      Tags:
        - Key: Name
-         Value: BTS-web-nacl
+         Value: NEXA-web-nacl
 
 
  # Web NACL Rules
- BTSwebnaclInboundRule:
+ NEXAwebnaclInboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
       NetworkAclId:
-        Ref: BTSwebNetworkAcl
+        Ref: NEXAwebNetworkAcl
       RuleNumber: 100
       Protocol: 6
       RuleAction: allow
@@ -159,11 +159,11 @@ Resources:
       PortRange:
         From: 0
         To: 65535
- BTSwebnaclOutboundRule:
+ NEXAwebnaclOutboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
       NetworkAclId:
-        Ref: BTSwebNetworkAcl
+        Ref: NEXAwebNetworkAcl
       RuleNumber: 100
       Protocol: -1
       Egress: true
@@ -172,32 +172,32 @@ Resources:
 
 
 # Web NACL Association      
- BTSwebSubnetNetworkAclAssociation:
+ NEXAwebSubnetNetworkAclAssociation:
    Type: AWS::EC2::SubnetNetworkAclAssociation
    Properties:
      SubnetId:
-       Ref: BTSwebSubnet
+       Ref: NEXAwebSubnet
      NetworkAclId:
-       Ref: BTSwebNetworkAcl
+       Ref: NEXAwebNetworkAcl
 
 
 # App NACL
- BTSappNetworkAcl:
+ NEXAappNetworkAcl:
    Type: AWS::EC2::NetworkAcl
    Properties:
      VpcId:
-       Ref: BTSVPC
+       Ref: NEXAVPC
      Tags:
        - Key: Name
-         Value: BTS-app-nacl
+         Value: NEXA-app-nacl
 
 
  # App NACL Rules
- BTSappnaclInboundRule:
+ NEXAappnaclInboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
      NetworkAclId:
-       Ref: BTSappNetworkAcl
+       Ref: NEXAappNetworkAcl
      RuleNumber: 100
      Protocol: 6
      RuleAction: allow
@@ -207,11 +207,11 @@ Resources:
        To: 65535
 
       
- BTSappnaclOutboundRule:
+ NEXAappnaclOutboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
      NetworkAclId:
-       Ref: BTSappNetworkAcl
+       Ref: NEXAappNetworkAcl
      RuleNumber: 100
      Protocol: -1
      Egress: true
@@ -219,29 +219,29 @@ Resources:
      CidrBlock: 0.0.0.0/0
 
  # App NACL Association      
- BTSappSubnetNetworkAclAssociation:
+ NEXAappSubnetNetworkAclAssociation:
    Type: AWS::EC2::SubnetNetworkAclAssociation
    Properties:
      SubnetId:
-       Ref: BTSappSubnet
+       Ref: NEXAappSubnet
      NetworkAclId:
-       Ref: BTSappNetworkAcl
+       Ref: NEXAappNetworkAcl
  # DB NACL
- BTSdbNetworkAcl:
+ NEXAdbNetworkAcl:
    Type: AWS::EC2::NetworkAcl
    Properties:
      VpcId:
-       Ref: BTSVPC
+       Ref: NEXAVPC
      Tags:
        - Key: Name
-         Value: BTS-db-nacl
+         Value: NEXA-db-nacl
 
  # DB NACL Rules
- BTSdbnaclInboundRule:
+ NEXAdbnaclInboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
      NetworkAclId:
-       Ref: BTSdbNetworkAcl
+       Ref: NEXAdbNetworkAcl
      RuleNumber: 100
      Protocol: 6
      RuleAction: allow
@@ -250,11 +250,11 @@ Resources:
        From: 0
        To: 65535
 
- BTSdbnaclOutboundRule:
+ NEXAdbnaclOutboundRule:
    Type: AWS::EC2::NetworkAclEntry
    Properties:
      NetworkAclId:
-       Ref: BTSdbNetworkAcl
+       Ref: NEXAdbNetworkAcl
      RuleNumber: 100
      Protocol: -1
      Egress: true
@@ -262,21 +262,21 @@ Resources:
      CidrBlock: 0.0.0.0/0
 
  # DB NACL Association      
- BTSdbSubnetNetworkAclAssociation:
+ NEXAdbSubnetNetworkAclAssociation:
    Type: AWS::EC2::SubnetNetworkAclAssociation
    Properties:
      SubnetId:
-       Ref: BTSdbSubnet
+       Ref: NEXAdbSubnet
      NetworkAclId:
-       Ref: BTSdbNetworkAcl
+       Ref: NEXAdbNetworkAcl
 
 
  # Web Secuirty Group
- BTSwebInstanceSecurityGroup:
+ NEXAwebInstanceSecurityGroup:
    Type: AWS::EC2::SecurityGroup
    Properties:
      GroupDescription: Allow ssh & http to client host
-     VpcId: !Ref BTSVPC
+     VpcId: !Ref NEXAVPC
      SecurityGroupIngress:
        - IpProtocol: tcp
          FromPort: 22
@@ -293,15 +293,15 @@ Resources:
          CidrIp: 0.0.0.0/0
      Tags:
        - Key: Name
-         Value: BTS-web-sg
+         Value: NEXA-web-sg
 
 
  # App Secuirty Group
- BTSappInstanceSecurityGroup:
+ NEXAappInstanceSecurityGroup:
    Type: AWS::EC2::SecurityGroup
    Properties:
      GroupDescription: Allow ssh & http to client host
-     VpcId: !Ref BTSVPC
+     VpcId: !Ref NEXAVPC
      SecurityGroupIngress:
        - IpProtocol: tcp
          FromPort: 22
@@ -318,15 +318,15 @@ Resources:
          CidrIp: 0.0.0.0/0
      Tags:
        - Key: Name
-         Value: BTS-app-sg
+         Value: NEXA-app-sg
 
 
 # DB Secuirty Group
- BTSdbInstanceSecurityGroup:
+ NEXAdbInstanceSecurityGroup:
    Type: AWS::EC2::SecurityGroup
    Properties:
      GroupDescription: Allow ssh & mysql to client host
-     VpcId: !Ref BTSVPC
+     VpcId: !Ref NEXAVPC
      SecurityGroupIngress:
        - IpProtocol: tcp
          FromPort: 22
@@ -343,18 +343,18 @@ Resources:
          CidrIp: 0.0.0.0/0
      Tags:
        - Key: Name
-         Value: BTS-db-sg
+         Value: NEXA-db-sg
 # Web Instance
- BTSwebInstance:
+ NEXAwebInstance:
    Type: 'AWS::EC2::Instance'
    Properties:
      ImageId: ami-0d1e3f2707b2b8925
      InstanceType: t2.micro
      KeyName: aws-2423
      SubnetId:
-       Ref: BTSwebSubnet
+       Ref: NEXAwebSubnet
      SecurityGroupIds:
-       - Ref: BTSwebInstanceSecurityGroup
+       - Ref: NEXAwebInstanceSecurityGroup
      UserData:
        Fn::Base64: !Sub |
          #!/bin/bash
@@ -362,10 +362,10 @@ Resources:
          yum install httpd git -y
          systemctl start httpd
          systemctl enable httpd
-         git clone https://github.com/ravi2krishna/BTS.git /var/www/html
+         git clone https://github.com/ravi2krishna/NEXA.git /var/www/html
      Tags:
        - Key: Name
-         Value: BTS-web-server   
+         Value: NEXA-web-server   
 
 
 
