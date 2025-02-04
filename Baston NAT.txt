@@ -39,7 +39,7 @@ Resources:
        Value: NEXA-app-subnet
 
 
-  # DB Subnet         
+# DB Subnet         
  NEXAdbSubnet:
    Type: AWS::EC2::Subnet
    Properties:
@@ -52,7 +52,7 @@ Resources:
        Value: NEXA-db-subnet
 
 
- # Internet Gateway
+# Internet Gateway
  NEXAInternetGateway:
    Type: AWS::EC2::InternetGateway
    Properties:
@@ -61,7 +61,7 @@ Resources:
        Value: NEXA-igw
 
 
- # Attach Internet Gateway     
+# Attach Internet Gateway     
  NEXAAttachGateway:
    Type: AWS::EC2::VPCGatewayAttachment
    Properties:
@@ -71,7 +71,7 @@ Resources:
        Ref: NEXAInternetGateway
 
 
- # Public Route Table
+# Public Route Table
  NEXApubRouteTable:
    Type: AWS::EC2::RouteTable
    Properties:
@@ -94,7 +94,7 @@ Resources:
         Ref: NEXAInternetGateway
 
 
- # RT - Subnet Association
+# RT - Subnet Association
  NEXAwebSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
@@ -125,7 +125,7 @@ Resources:
        Value: NEXA-pvt-rt
 
 
- # RT - Subnet Association
+# RT - Subnet Association
  NEXAdbSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
@@ -135,7 +135,7 @@ Resources:
        Ref: NEXApvtRouteTable
 
 
- # RT - Subnet Association
+# RT - Subnet Association
  NEXAwebNetworkAcl:
    Type: AWS::EC2::NetworkAcl
    Properties:
