@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: NEXA Infrastructure
+Description: Ecomm Infrastructure
 Resources:
-# VPC
- NEXAVPC:
+ # VPC
+ ecommVPC:
    Type: AWS::EC2::VPC
    Properties:
      CidrBlock: 10.0.0.0/16
@@ -10,155 +10,132 @@ Resources:
      EnableDnsHostnames: 'true'
      Tags:
        - Key: Name
-         Value: NEXA-vpc
+         Value: ecomm-vpc
 
-
-# Web Subnet         
- NEXAwebSubnet:
+ # Web Subnet         
+ ecommwebSubnet:
    Type: AWS::EC2::Subnet
    Properties:
-     VpcId: !Ref NEXAVPC
+     VpcId: !Ref ecommVPC
      CidrBlock: 10.0.0.0/24
      AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "true"
      Tags:
      - Key: Name
-       Value: NEXA-web-subnet
+       Value: ecomm-web-subnet
 
-
-# App Subnet         
- NEXAappSubnet:
+ # App Subnet         
+ ecommappSubnet:
    Type: AWS::EC2::Subnet
    Properties:
-     VpcId: !Ref NEXAVPC
+     VpcId: !Ref ecommVPC
      CidrBlock: 10.0.1.0/24
      AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "true"
      Tags:
      - Key: Name
-       Value: NEXA-app-subnet
+       Value: ecomm-app-subnet
 
 
-# DB Subnet         
- NEXAdbSubnet:
+ # DB Subnet         
+ ecommdbSubnet:
    Type: AWS::EC2::Subnet
    Properties:
-     VpcId: !Ref NEXAVPC
+     VpcId: !Ref ecommVPC
      CidrBlock: 10.0.2.0/24
      AvailabilityZone: "ca-central-1a"
      MapPublicIpOnLaunch: "false"
      Tags:
      - Key: Name
-       Value: NEXA-db-subnet
+       Value: ecomm-db-subnet
 
 
-# Internet Gateway
- NEXAInternetGateway:
+ # Internet Gateway
+ ecommInternetGateway:
    Type: AWS::EC2::InternetGateway
    Properties:
      Tags:
      - Key: Name
-       Value: NEXA-igw
+       Value: ecomm-igw
 
 
-# Attach Internet Gateway     
- NEXAAttachGateway:
+ # Attach Internet Gateway     
+ ecommAttachGateway:
    Type: AWS::EC2::VPCGatewayAttachment
    Properties:
      VpcId:
-       Ref: NEXAVPC
+       Ref: ecommVPC
      InternetGatewayId:
-       Ref: NEXAInternetGateway
+       Ref: ecommInternetGateway
 
 
-# Public Route Table
- NEXApubRouteTable:
+  # Public Route Table
+ ecommpubRouteTable:
    Type: AWS::EC2::RouteTable
    Properties:
      VpcId: 
-       Ref: NEXAVPC
+       Ref: ecommVPC
      Tags:
      - Key: Name
-       Value: NEXA-pub-rt
+       Value: ecomm-pub-rt
 
 
-# Internet Route
+ # Internet Route
  myRoute:
    Type: AWS::EC2::Route
-   DependsOn: NEXAAttachGateway
+   DependsOn: ecommAttachGateway
    Properties:
       RouteTableId:
-        Ref: NEXApubRouteTable
+        Ref: ecommpubRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId:
-        Ref: NEXAInternetGateway
-
-
-# RT - Subnet Association
- NEXAwebSubnetRouteTableAssociation:
+        Ref: ecommInternetGateway
+  
+ # RT - Subnet Association
+ ecommwebSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
      SubnetId:
-       Ref: NEXAwebSubnet
+       Ref: ecommwebSubnet
      RouteTableId:
-       Ref: NEXApubRouteTable
+       Ref: ecommpubRouteTable
 
 
-# RT - Subnet Association
- NEXAappSubnetRouteTableAssociation:
+ # RT - Subnet Association
+ ecommappSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
      SubnetId:
-       Ref: NEXAappSubnet
+       Ref: ecommappSubnet
      RouteTableId:
-       Ref: NEXApubRouteTable
+       Ref: ecommpubRouteTable
 
 
-# Private Route Table
- NEXApvtRouteTable:
+ # Private Route Table
+ ecommpvtRouteTable:
    Type: AWS::EC2::RouteTable
    Properties:
      VpcId: 
-       Ref: NEXAVPC
+       Ref: ecommVPC
      Tags:
      - Key: Name
-       Value: NEXA-pvt-rt
+       Value: ecomm-pvt-rt
 
 
-# RT - Subnet Association
- NEXAdbSubnetRouteTableAssociation:
+ # RT - Subnet Association
+ ecommdbSubnetRouteTableAssociation:
    Type: AWS::EC2::SubnetRouteTableAssociation
    Properties:
      SubnetId:
-       Ref: NEXAdbSubnet
+       Ref: ecommdbSubnet
      RouteTableId:
-       Ref: NEXApvtRouteTable
-
-
-# RT - Subnet Association
- NEXAwebNetworkAcl:
+       Ref: ecommpvtRouteTable
+  # RT - Subnet Association
+ ecommwebNetworkAcl:
    Type: AWS::EC2::NetworkAcl
    Properties:
      VpcId:
-       Ref: NEXAVPC
+       Ref: ecommVPC
      Tags:
        - Key: Name
-         Value: NEXA-web-nacl
-
-
-
-
-
-
-       
-
-
-
-
-      
-    
-
-
-
-
-     
+         Value: ecomm-web-nacl
