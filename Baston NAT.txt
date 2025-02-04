@@ -1,0 +1,164 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: NEXA Infrastructure
+Resources:
+ # VPC
+ NEXAVPC:
+   Type: AWS::EC2::VPC
+   Properties:
+     CidrBlock: 10.0.0.0/16
+     EnableDnsSupport: 'true'
+     EnableDnsHostnames: 'true'
+     Tags:
+       - Key: Name
+         Value: NEXA-vpc
+
+
+# Web Subnet         
+ NEXAwebSubnet:
+   Type: AWS::EC2::Subnet
+   Properties:
+     VpcId: !Ref NEXAVPC
+     CidrBlock: 10.0.0.0/24
+     AvailabilityZone: "ca-central-1a"
+     MapPublicIpOnLaunch: "true"
+     Tags:
+     - Key: Name
+       Value: NEXA-web-subnet
+
+
+# App Subnet         
+ NEXAappSubnet:
+   Type: AWS::EC2::Subnet
+   Properties:
+     VpcId: !Ref NEXAVPC
+     CidrBlock: 10.0.1.0/24
+     AvailabilityZone: "ca-central-1a"
+     MapPublicIpOnLaunch: "true"
+     Tags:
+     - Key: Name
+       Value: NEXA-app-subnet
+
+
+  # DB Subnet         
+ NEXAdbSubnet:
+   Type: AWS::EC2::Subnet
+   Properties:
+     VpcId: !Ref NEXAVPC
+     CidrBlock: 10.0.2.0/24
+     AvailabilityZone: "ca-central-1a"
+     MapPublicIpOnLaunch: "false"
+     Tags:
+     - Key: Name
+       Value: NEXA-db-subnet
+
+
+ # Internet Gateway
+ NEXAInternetGateway:
+   Type: AWS::EC2::InternetGateway
+   Properties:
+     Tags:
+     - Key: Name
+       Value: NEXA-igw
+
+
+ # Attach Internet Gateway     
+ NEXAAttachGateway:
+   Type: AWS::EC2::VPCGatewayAttachment
+   Properties:
+     VpcId:
+       Ref: NEXAVPC
+     InternetGatewayId:
+       Ref: NEXAInternetGateway
+
+
+ # Public Route Table
+ NEXApubRouteTable:
+   Type: AWS::EC2::RouteTable
+   Properties:
+     VpcId: 
+       Ref: NEXAVPC
+     Tags:
+     - Key: Name
+       Value: NEXA-pub-rt
+
+
+# Internet Route
+ myRoute:
+   Type: AWS::EC2::Route
+   DependsOn: NEXAAttachGateway
+   Properties:
+      RouteTableId:
+        Ref: NEXApubRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: NEXAInternetGateway
+
+
+ # RT - Subnet Association
+ NEXAwebSubnetRouteTableAssociation:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+     SubnetId:
+       Ref: NEXAwebSubnet
+     RouteTableId:
+       Ref: NEXApubRouteTable
+
+
+# RT - Subnet Association
+ NEXAappSubnetRouteTableAssociation:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+     SubnetId:
+       Ref: NEXAappSubnet
+     RouteTableId:
+       Ref: NEXApubRouteTable
+
+
+# Private Route Table
+ NEXApvtRouteTable:
+   Type: AWS::EC2::RouteTable
+   Properties:
+     VpcId: 
+       Ref: NEXAVPC
+     Tags:
+     - Key: Name
+       Value: NEXA-pvt-rt
+
+
+ # RT - Subnet Association
+ NEXAdbSubnetRouteTableAssociation:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+     SubnetId:
+       Ref: NEXAdbSubnet
+     RouteTableId:
+       Ref: NEXApvtRouteTable
+
+
+ # RT - Subnet Association
+ NEXAwebNetworkAcl:
+   Type: AWS::EC2::NetworkAcl
+   Properties:
+     VpcId:
+       Ref: NEXAVPC
+     Tags:
+       - Key: Name
+         Value: NEXA-web-nacl
+
+
+
+
+
+
+       
+
+
+
+
+      
+    
+
+
+
+
+     
