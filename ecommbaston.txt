@@ -130,12 +130,4 @@ Resources:
        Ref: ecommdbSubnet
      RouteTableId:
        Ref: ecommpvtRouteTable
-  # RT - Subnet Association
- ecommwebNetworkAcl:
-   Type: AWS::EC2::NetworkAcl
-   Properties:
-     VpcId:
-       Ref: ecommVPC
-     Tags:
-       - Key: Name
-         Value: ecomm-web-nacl
+ 
